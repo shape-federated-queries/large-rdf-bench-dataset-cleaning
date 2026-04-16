@@ -39,11 +39,17 @@ func main() {
 		os.Exit(1)
 	}
 
+	total := len(runParams)
+	fmt.Printf("Found %d file(s) to clean\n", total)
+
 	runErrors := []RunError{}
-	for _, param := range runParams {
+	for i, param := range runParams {
+		fmt.Printf("[%d/%d] Cleaning %s\n", i+1, total, param.InitialFilePath)
 		if err := run(param); err != nil {
-			fmt.Println(err)
+			fmt.Printf("[%d/%d] Error: %s\n", i+1, total, err)
 			runErrors = append(runErrors, newRunError(param, err))
+		} else {
+			fmt.Printf("[%d/%d] Done -> %s\n", i+1, total, param.OutputFilePath)
 		}
 	}
 
